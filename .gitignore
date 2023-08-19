@@ -1,10 +1,16 @@
-# For projects using Nanoc (http://nanoc.ws/)
+# Dependency directories
+node_modules/
 
-# Default location for output (needs to match output_dir's value found in nanoc.yaml)
-output/
+# dotenv
+.env
 
-# Temporary file directory
-tmp/nanoc/
+# VisualStudioCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-# Crash Log
-crash.log
+# Idea Webstorm
+.idea/
