@@ -1,5 +1,6 @@
 import { Request, Response} from 'express';
 import { db } from "../config/db.connection";
+import { sendErrorResponse, sendSuccessResponse } from "../utils/response.handler";
 
 const getAllUsers = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -10,10 +11,9 @@ const getAllUsers = async (req: Request, res: Response): Promise<void> => {
         `;
 
         const userAllResult = await db.query(userAllQuery);
-        res.status(200).json(userAllResult[0]);
+        sendSuccessResponse(res, 200, userAllResult[0]);
     } catch (error) {
-        console.error('Error result:', error);
-        res.status(500).send('Error');
+        sendErrorResponse(res, 500, 'Failed getting all users');
     }
 }
 
@@ -35,14 +35,9 @@ const getIdUser = async (req: Request, res: Response): Promise<void> => {
         GROUP BY u.id, u.name, u.address;
     `;
         const userResult: Array<any> = await db.query(userInfoQuery, [userId]);
-
-        if (userResult.length === 0) {
-            res.status(404).send('User ID not found');
-        } else {
-            res.json(userResult[0]);
-        }
+        sendSuccessResponse(res, 200, userResult[0]);
     } catch (error) {
-        res.status(500).send('Failed get user ID information');
+        sendErrorResponse(res, 500, 'Failed getting user ID information');
     }
 }
 

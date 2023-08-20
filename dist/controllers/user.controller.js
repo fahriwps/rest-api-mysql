@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_connection_1 = require("../config/db.connection");
+const response_handler_1 = require("../utils/response.handler");
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userAllQuery = `
@@ -18,11 +19,10 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             FROM User;
         `;
         const userAllResult = yield db_connection_1.db.query(userAllQuery);
-        res.status(200).json(userAllResult[0]);
+        (0, response_handler_1.sendSuccessResponse)(res, 200, userAllResult[0]);
     }
     catch (error) {
-        console.error('Error result:', error);
-        res.status(500).send('Error');
+        (0, response_handler_1.sendErrorResponse)(res, 500, 'Failed getting all users');
     }
 });
 const getIdUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -42,15 +42,10 @@ const getIdUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         GROUP BY u.id, u.name, u.address;
     `;
         const userResult = yield db_connection_1.db.query(userInfoQuery, [userId]);
-        if (userResult.length === 0) {
-            res.status(404).send('User ID not found');
-        }
-        else {
-            res.json(userResult[0]);
-        }
+        (0, response_handler_1.sendSuccessResponse)(res, 200, userResult[0]);
     }
     catch (error) {
-        res.status(500).send('Failed get user ID information');
+        (0, response_handler_1.sendErrorResponse)(res, 500, 'Failed getting user ID information');
     }
 });
 const userController = { getAllUsers, getIdUser };

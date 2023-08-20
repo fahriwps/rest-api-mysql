@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_connection_1 = require("../config/db.connection");
+const response_handler_1 = require("../utils/response.handler");
 const postTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { type, amount, user_id } = req.body;
     try {
@@ -18,10 +19,10 @@ const postTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
             VALUES (?, ?, ?);
         `;
         yield db_connection_1.db.query(postTransactionQuery, [user_id, type, amount]);
-        res.json({ id: user_id });
+        (0, response_handler_1.sendSuccessResponse)(res, 200, { id: user_id });
     }
     catch (error) {
-        res.status(500).send('Failed adding transaction');
+        (0, response_handler_1.sendErrorResponse)(res, 500, 'Failed adding transaction');
     }
 });
 const putTransactionId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,10 +35,10 @@ const putTransactionId = (req, res) => __awaiter(void 0, void 0, void 0, functio
             WHERE id = ?;
         `;
         yield db_connection_1.db.query(updateTransactionQuery, [type, amount, user_id, transactionId]);
-        res.json({ id: transactionId });
+        (0, response_handler_1.sendSuccessResponse)(res, 200, { id: transactionId });
     }
     catch (error) {
-        res.status(500).send('Failed updating transaction');
+        (0, response_handler_1.sendErrorResponse)(res, 500, 'Failed updating transaction');
     }
 });
 const deleteTransactionId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,10 +49,10 @@ const deleteTransactionId = (req, res) => __awaiter(void 0, void 0, void 0, func
             WHERE id = ?;
         `;
         yield db_connection_1.db.query(deleteTransactionQuery, [transactionId]);
-        res.json({ id: transactionId });
+        (0, response_handler_1.sendSuccessResponse)(res, 200, { id: transactionId });
     }
     catch (error) {
-        res.status(500).send('Failed deleting transaction');
+        (0, response_handler_1.sendErrorResponse)(res, 500, 'Failed deleting transaction');
     }
 });
 const transactionController = { postTransaction, putTransactionId, deleteTransactionId };

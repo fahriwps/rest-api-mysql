@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { db } from "../config/db.connection";
+import { sendErrorResponse, sendSuccessResponse } from "../utils/response.handler";
 
 const postTransaction = async (req: Request, res: Response): Promise<void> => {
     const { type, amount, user_id } = req.body;
@@ -11,9 +12,9 @@ const postTransaction = async (req: Request, res: Response): Promise<void> => {
         `;
 
         await db.query(postTransactionQuery, [user_id, type, amount]);
-        res.json({ id: user_id });
+        sendSuccessResponse(res, 200, { id: user_id });
     } catch (error) {
-        res.status(500).send('Failed adding transaction');
+        sendErrorResponse(res, 500, 'Failed adding transaction');
     }
 }
 
@@ -29,9 +30,9 @@ const putTransactionId = async (req: Request, res: Response): Promise<void> => {
         `;
 
         await db.query(updateTransactionQuery, [type, amount, user_id, transactionId]);
-        res.json({ id: transactionId });
+        sendSuccessResponse(res, 200, { id: transactionId });
     } catch (error) {
-        res.status(500).send('Failed updating transaction');
+        sendErrorResponse(res, 500, 'Failed updating transaction');
     }
 }
 
@@ -44,9 +45,9 @@ const deleteTransactionId = async (req: Request, res: Response): Promise<void> =
         `;
 
         await db.query(deleteTransactionQuery, [transactionId]);
-        res.json({ id: transactionId });
+        sendSuccessResponse(res, 200, { id: transactionId });
     } catch (error) {
-        res.status(500).send('Failed deleting transaction');
+        sendErrorResponse(res, 500, 'Failed deleting transaction');
     }
 }
 
