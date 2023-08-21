@@ -1,7 +1,7 @@
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import userRoutes from "./user.route";
 import transactionRoutes from "./transaction.route";
-import {sendErrorResponse, sendSuccessResponse} from "../utils/response.handler";
+import { sendErrorResponse, sendSuccessResponse } from "../utils/response.handler";
 
 const routes = express.Router();
 
